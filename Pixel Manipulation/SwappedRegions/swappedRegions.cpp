@@ -57,7 +57,7 @@ void usage(char *program_name){
 Mat initImage(String img_name){
   Mat img = imread(img_name, CV_LOAD_IMAGE_GRAYSCALE);
   if(!img.data){
-    printf("Não foi possível carregar a imagem 'biel.png'...\n");
+    cout << "Não foi possível carregar a imagem '" << img_name << "'...\n";
     exit(1);
   }
   return img;

@@ -1,4 +1,4 @@
 Caso haja mais de 255 objetos na cena, o algorítimo original apresentado tentará impor um tom de cinza
 maior que 255 e será setado para 255 como comportamento padrão da função floodFill() com valores acima de 255.
 Para resolver esse problema, podemos passar o resto da divisão de nObjects por 256 como ultimo parâmetro do
-floodFill().
+floodFill() ou apenas fixarmos um tom de cinza escolhido.

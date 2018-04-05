@@ -30,8 +30,7 @@ int main(int argc, char* argv[]){
     const float *histRange = {range};
 
     // The boolean variables bellow are to be used for the function calcHist
-    bool uniform = true;
-    bool accumulate = true;
+    bool uniform = true, accumulate = true;
 
     /*
     * image: The final image to be displayed

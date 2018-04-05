@@ -49,7 +49,7 @@ int main(int argc, char* argv[]){
     bool uniform = true, accumulate = true;
 
     // fullContainer: Will store two of the same size side-by-side
-    Mat fullContainer(480, 2*640, CV_8UC1);
+    Mat fullContainer(480, 2*640, CV_8UC1), tempImage;
 
     ImageInfo current, past;
     current.histImg = Mat(histH, histW, CV_8UC1, Scalar(0));
@@ -59,14 +59,16 @@ int main(int argc, char* argv[]){
 
     while(1){
       // Store the current camera frame into the first element of images vector
-      cap >> current.image;
+      cap >> tempImage;
       // Transform that image into a grayscale version of itself
-      cvtColor(current.image, current.image, CV_BGR2GRAY);
+      cvtColor(tempImage, current.image, CV_BGR2GRAY);
 
       // Get it's histogram and store it into the same index of hist vector
       calcHist(&current.image, 1, 0, Mat(), current.hist, 1, &nBins, &histRange, uniform, accumulate);
       // Normalize the histogram
       normalize(current.hist, current.hist, 0, current.histImg.rows, NORM_MINMAX, -1, Mat());
+      // Set the same index of histImg to be all black
+      current.histImg.setTo(Scalar(0));
 
       // Draw each one of nBins lines on the current histImg
       for(int j = 0; j < nBins; ++j){

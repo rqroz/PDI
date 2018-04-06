@@ -27,12 +27,6 @@ int main(int argc, char* argv[]){
     * cap: OpenCV object for capturing video
     */
     VideoCapture cap;
-    cap.open(0);
-
-    if(!cap.isOpened()){
-      printf("Câmera indisponível...\n");
-      exit(1);
-    }
 
     /*
     * nBins: Size of vector used to store histograms
@@ -49,19 +43,26 @@ int main(int argc, char* argv[]){
     bool uniform = true, accumulate = true;
 
     // fullContainer: Will store two of the same size side-by-side
-    Mat fullContainer(480, 2*640, CV_8UC1), tempImage;
+    Mat fullContainer(480, 2*640, CV_8UC1);
 
     ImageInfo current, past;
     current.histImg = Mat(histH, histW, CV_8UC1, Scalar(0));
+
+    cap.open(0);
+
+    if(!cap.isOpened()){
+      printf("Câmera indisponível...\n");
+      exit(1);
+    }
 
     cout << "Width: " << cap.get(CV_CAP_PROP_FRAME_WIDTH) << endl
           << "Height: " << cap.get(CV_CAP_PROP_FRAME_HEIGHT) << endl;
 
     while(1){
       // Store the current camera frame into the first element of images vector
-      cap >> tempImage;
+      cap >> current.image;
       // Transform that image into a grayscale version of itself
-      cvtColor(tempImage, current.image, CV_BGR2GRAY);
+      cvtColor(current.image, current.image, CV_BGR2GRAY);
 
       // Get it's histogram and store it into the same index of hist vector
       calcHist(&current.image, 1, 0, Mat(), current.hist, 1, &nBins, &histRange, uniform, accumulate);

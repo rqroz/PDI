@@ -10,12 +10,6 @@ int main(int argc, char* argv[]){
     * cap: OpenCV object for capturing video
     */
     VideoCapture cap;
-    cap.open(0);
-
-    if(!cap.isOpened()){
-      printf("Câmera indisponível...\n");
-      exit(1);
-    }
 
     /*
     * nBins: Size of vector used to store histograms
@@ -52,6 +46,14 @@ int main(int argc, char* argv[]){
       Scalar(0, 255, 0),
       Scalar(255, 0, 0)
     };
+
+
+    cap.open(0);
+
+    if(!cap.isOpened()){
+      printf("Câmera indisponível...\n");
+      exit(1);
+    }
 
     vSize = histImg.size();
 

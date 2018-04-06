@@ -10,12 +10,6 @@ int main(int argc, char* argv[]){
     * cap: OpenCV object for capturing video
     */
     VideoCapture cap;
-    cap.open(0);
-
-    if(!cap.isOpened()){
-      printf("Câmera indisponível...\n");
-      exit(1);
-    }
 
     /*
     * nBins: Size of vector used to store histograms
@@ -44,6 +38,13 @@ int main(int argc, char* argv[]){
       Mat(histH, histW, CV_8UC1, Scalar(0)),
       Mat(histH, histW, CV_8UC1, Scalar(0))
     };
+
+    cap.open(0);
+
+    if(!cap.isOpened()){
+      printf("Câmera indisponível...\n");
+      exit(1);
+    }
 
     // vSize: Number of images
     int vSize = images.size();

@@ -28,7 +28,7 @@ int main(int argc, char* argv[]){
 
   video.open(0);
   if(!video.isOpened()){
-    printf("Câmera indisponível...\n");
+    printf("Camera not found...\n");
     exit(1);
   }
 
@@ -57,7 +57,7 @@ int main(int argc, char* argv[]){
       case 'a':
         menu();
         absolut = !absolut;
-        cout << endl << "-> Modulo " << (absolut ? "ativado" : "desativado") << endl;
+        cout << endl << "-> Absolut " << (absolut ? "on" : "off") << endl;
         break;
       case 'm':
         proccessMask(mask, 3, media, 1/9.0, true);
@@ -74,7 +74,7 @@ int main(int argc, char* argv[]){
       case 'l':
         proccessMask(mask, 3, laplacian);
         break;
-      case 'j':
+      case 'u':
         proccessMask(mask, 5, lapgauss);
         break;
       default:
@@ -87,13 +87,13 @@ int main(int argc, char* argv[]){
 
 void menu(){
   cout << "\nEscolha o filtro que deseja ativar: \n"
-            "a - calcular modulo\n"
-            "m - media\n"
-            "g - gauss\n"
-            "v - vertical\n"
-            "h - horizontal\n"
-            "l - laplaciano\n"
-            "j - laplaciano do gaussiano\n"
+            "a - Toggle Absolut\n"
+            "m - Mean\n"
+            "g - Gauss\n"
+            "v - Vertical\n"
+            "h - Horizontal\n"
+            "l - Laplacian\n"
+            "u - Laplacian of Gaussian\n"
             "esc - sair\n";
 }
 

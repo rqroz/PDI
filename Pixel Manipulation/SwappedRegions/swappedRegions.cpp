@@ -36,6 +36,8 @@ int main(int argc, char* argv[]){
   imshow("imgWindow", image);
   waitKey();
 
+  imwrite("swapped.png", image);
+
   return 0;
 }
 

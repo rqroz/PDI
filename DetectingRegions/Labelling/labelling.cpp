@@ -23,6 +23,7 @@ int main(int argc, char* argv[]){
   preProccessImage(image);
   totalObjects = countObjects(image, maxGrayScale, midGrayScale);
   displayImage(image);
+  imwrite("mid3.png", image);
   leakedObjects = countObjects(image, minGrayScale, midGrayScale);
   displayImage(image);
 
@@ -66,10 +67,12 @@ void preProccessImage(Mat& img){
 
   floodFill(img, startingPoint, 0); // Removing the bubbles touching the image's border
   displayImage(img);
+  imwrite("mid1.png", img);
   // Changing the color of the outside of bubbles so we can later search for holes using
   // 0 as the grayScale parameter
   floodFill(img, startingPoint, 50);
   displayImage(img);
+  imwrite("mid2.png", img);
 }
 
 int countObjects(Mat& img, int compareGrayScale, int setGrayScale){

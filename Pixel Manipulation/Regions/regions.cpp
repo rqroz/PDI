@@ -23,6 +23,7 @@ int main(int argc, char* argv[]){
 
   namedWindow("janelaBiel", WINDOW_AUTOSIZE);
   imshow("janelaBiel", image);
+  imwrite("negative.png", image);
   waitKey();
 
   return 0;

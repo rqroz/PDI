@@ -84,6 +84,7 @@ int main(int argc, char* argv[]){
         Point textOrg(s.width/5, s.height/1.2);
         putText(current.image, "A moviment was detected!", textOrg, FONT_HERSHEY_COMPLEX_SMALL, fontScale, Scalar::all(200), thickness,8);
         imwrite("someone.png", current.image);
+        current.image.copyTo(fullContainer(Rect(640,0,640,480)));
         cout << "A moviment was detected!" << endl;
       }
 
@@ -92,11 +93,9 @@ int main(int argc, char* argv[]){
 
       //Copy the current histImg into the current image
       current.histImg.copyTo(current.image(Rect(0, 0, nBins, histH)));
-      past.histImg.copyTo(past.image(Rect(0, 0, nBins, histH)));
 
       //Copy the current image to its desired position into fullContainer
       current.image.copyTo(fullContainer(Rect(0,0,640,480)));
-      past.image.copyTo(fullContainer(Rect(640,0,640,480)));
 
       // Display full container and close the window if the user pressed any button after 30ms
       imshow("fullContainer", fullContainer);

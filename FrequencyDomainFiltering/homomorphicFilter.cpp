@@ -30,17 +30,16 @@ int main(int argv, char** argc){
 
 
   img = imread("pulpfiction.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-  int rows = img.rows, cols = img.cols;
 
   // identifica os tamanhos otimos para
   // calculo do FFT
-  dft_M = getOptimalDFTSize(rows);
-  dft_N = getOptimalDFTSize(cols);
+  dft_M = getOptimalDFTSize(img.rows);
+  dft_N = getOptimalDFTSize(img.cols);
 
   // realiza o padding da imagem
   copyMakeBorder(img, padded, 0,
-                 dft_M - rows, 0,
-                 dft_N - cols,
+                 dft_M - img.rows, 0,
+                 dft_N - img.cols,
                  BORDER_CONSTANT, Scalar::all(0));
 
    // parte imaginaria da matriz complexa (preenchida com zeros)
@@ -56,21 +55,23 @@ int main(int argv, char** argc){
    // cria uma matriz temporária para criar as componentes real
    // e imaginaria do filtro ideal
    tmpImg = Mat(dft_M, dft_N, CV_32F);
-
    while(1){
      grayImg = img.clone();
      imshow("Original Image", grayImg);
      // realiza o padding da imagem
      copyMakeBorder(grayImg, padded, 0,
-       dft_M - rows, 0,
-       dft_N - cols,
-       BORDER_CONSTANT, Scalar::all(0));
+                     dft_M - img.rows, 0,
+                     dft_N - img.cols,
+                     BORDER_CONSTANT, Scalar::all(0));
 
      // limpa o array de matrizes que vao compor a
      // imagem complexa
      planes.clear();
      // cria a compoente real
      realInput = Mat_<float>(padded);
+     realInput += Scalar::all(1);
+     log(realInput,realInput);
+
      // insere as duas componentes no array de matrizes
      planes.push_back(realInput);
      planes.push_back(zeros);
@@ -92,7 +93,7 @@ int main(int argv, char** argc){
      deslocaDFT(complexImg);
 
      // calcula a DFT inversa
-     idft(complexImg, complexImg);
+     idft(complexImg, complexImg, DFT_SCALE);
 
      // limpa o array de planos
      planes.clear();
@@ -115,6 +116,8 @@ int main(int argv, char** argc){
      key = (char) waitKey(10);
      if( key == 27 ) break; // esc pressed!
    }
+
+   return 0;
 }
 
 void displayFilter(Mat& filteredImg){
@@ -128,18 +131,15 @@ void displayFilter(Mat& filteredImg){
 }
 
 void homomorphic_trackbar_handler(int, void*){
-  dft_M = tmpImg.size().height;
-  dft_N = tmpImg.size().width;
-
   double gammaH = valueH/10.0;
   double gammaL = valueL/10.0;
-  double intial_d = d0/10.0;
-  double initial_c = c0/1000.0;
+  double d_val = d0/10.0;
+  double c_val = c0/1000.0;
 
-  for(int i=0; i<dft_M; i++){
-    for(int j=0; j<dft_N; j++){
+  for(int i = 0; i < dft_M; i++){
+    for(int j = 0; j < dft_N; j++){
       double D = pow(i - dft_M/2, 2) + pow(j - dft_N/2, 2);
-      tmpImg.at<float> (i,j) = (gammaH - gammaL) * (1 - exp(-initial_c*D/pow(intial_d, 2))) + gammaL;
+      tmpImg.at<float> (i,j) = (gammaH - gammaL) * (1 - exp(-c_val*D/pow(d_val, 2))) + gammaL;
     }
   }
 
